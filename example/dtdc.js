@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 var fs = require('fs');
-var d2x = require('./dtd2xonomy.js');
+var d2x = require('../dtdconvert/dtd2xonomy.js');
 
 var inputFile = process.argv[2];
 console.log(inputFile);

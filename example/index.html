@@ -1,0 +1,70 @@
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+	<title>DTD2Xonomy</title>
+	<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript" src="xonomy.js"></script>
+	<script type="text/javascript" src="../dtdconvert/dtd2xonomy.js"></script>
+	<link type="text/css" rel="stylesheet" href="xonomy.css"/>
+  <script type="text/javascript">
+  var testdtdData;
+  var wndtdData;
+  $(function() {
+    $.ajax({ url: "wn.dtd", success: function(file_content) {
+        wndtdData = file_content;
+        changeDtd();
+      }
+    });
+    $.ajax({ url: "test.dtd", success: function(file_content) {
+        testdtdData = file_content;
+      }
+    });
+
+    });
+    function changeDtd() {
+      var dtdradio = $('input[name=dtddata]:checked').val();
+      var dtddata = testdtdData;
+      switch(dtdradio) {
+        case 'wn':
+          var dtddata = wndtdData;
+          break;
+        case 'kemd':
+          var dtddata = kemdDtd;
+          break;
+      }
+      $("#dtd").val(dtddata);
+      updateEditor();
+    }
+    function updateEditor() {
+      var dtdData = $("#dtd").val();
+      var xmlStructure = parseDTD(dtdData);
+      var xmlDoc = initialDocument(xmlStructure)
+      var spec = struct2Xonomy(xmlStructure);
+      var xema = struct2Xema(xmlStructure);
+      $("#xema").val(JSON.stringify(xema,undefined,1));
+	  	var editor=document.getElementById("editor");
+		  Xonomy.lang="en";
+  		Xonomy.render(xmlDoc, editor, spec);
+    }
+	</script>
+	
+</head>
+<body >
+predefined <label><input type="radio" name="dtddata" value="test"  onclick="changeDtd()">testdoc</label>
+<label><input type="radio" name="dtddata" value="wn" onclick="changeDtd()" checked="checked">wordnet</label>
+<br>
+<div style="float:left;margin-right:5em;">
+DTD<br>
+<textarea id="dtd" rows="15" cols="50">
+</textarea>
+</div>
+<div style="">
+Xema<br>
+<textarea id="xema" rows="15" cols="50" disabled="disabled">
+</textarea>
+</div>
+<br><input type="button" value="refresh Xonomy" onclick="updateEditor()">
+	<div class="">
+		<div id="editor"></div>
+	</div>
+</body>
+</html>
