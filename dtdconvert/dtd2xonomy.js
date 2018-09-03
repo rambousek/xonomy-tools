@@ -532,6 +532,9 @@ module.exports = {
     console.log(spec)
     var xema = struct2Xema(xmlStructure);
     console.log(JSON.stringify(xema,undefined,1))
+  },
+  struct2Xema: function(xmlStructure) {
+    return struct2Xema(xmlStructure);
   }
 }
 } catch(e) {}
